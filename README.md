@@ -68,7 +68,7 @@ You should see something like `Python 3.11.x`.
 
 **Option A: Clone with Git**
 ```bash
-git clone https://github.com/YOUR_USERNAME/searchbrief-ai.git
+git clone https://github.com/saurabh224s/searchbrief-ai.git
 cd searchbrief-ai
 ```
 
