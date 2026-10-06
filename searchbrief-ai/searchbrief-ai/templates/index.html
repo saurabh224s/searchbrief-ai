@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SearchBrief AI — Research Anything Instantly</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Lora:ital,wght@0,600;1,400&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/static/style.css" />
+</head>
+<body>
+
+  <!-- ── Header ─────────────────────────────────────────────── -->
+  <header class="site-header">
+    <div class="header-inner">
+      <span class="logo">
+        <svg width="22" height="22" viewBox="0 0 22 22" fill="none" aria-hidden="true">
+          <circle cx="9" cy="9" r="7" stroke="currentColor" stroke-width="2"/>
+          <line x1="14.5" y1="14.5" x2="20" y2="20" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+          <line x1="6" y1="9" x2="12" y2="9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+          <line x1="9" y1="6" x2="9" y2="12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+        </svg>
+        SearchBrief AI
+      </span>
+      <span class="header-tag">Powered by SerpApi + Claude</span>
+    </div>
+  </header>
+
+  <!-- ── Hero / Search ──────────────────────────────────────── -->
+  <main>
+    <section class="hero">
+      <h1>Research anything.<br /><em>Understand it instantly.</em></h1>
+      <p class="hero-sub">
+        Type any topic. SearchBrief fetches live web results via SerpApi
+        and turns them into a clear, structured brief using Claude AI.
+      </p>
+
+      <div class="search-box" role="search">
+        <input
+          type="text"
+          id="queryInput"
+          placeholder="e.g. climate change solutions, quantum computing, Indian startup ecosystem…"
+          autocomplete="off"
+          aria-label="Search topic"
+          maxlength="200"
+        />
+        <button id="searchBtn" onclick="runSearch()">
+          <span class="btn-text">Research</span>
+          <span class="btn-icon" aria-hidden="true">→</span>
+        </button>
+      </div>
+
+      <p class="hint">Press Enter or click Research. Results appear below.</p>
+    </section>
+
+    <!-- ── Results ──────────────────────────────────────────── -->
+    <section class="results-section" id="resultsSection" aria-live="polite">
+
+      <!-- Loading state -->
+      <div class="loading" id="loadingState" hidden>
+        <div class="spinner" aria-hidden="true"></div>
+        <p id="loadingMsg">Searching the web…</p>
+      </div>
+
+      <!-- Error state -->
+      <div class="error-card" id="errorState" hidden>
+        <strong>Something went wrong</strong>
+        <p id="errorMsg"></p>
+      </div>
+
+      <!-- Brief output -->
+      <div class="brief-card" id="briefCard" hidden>
+        <div class="brief-body" id="briefBody"></div>
+
+        <div class="sources-panel">
+          <h3 class="sources-title">Top Sources</h3>
+          <ol class="sources-list" id="sourcesList"></ol>
+        </div>
+
+        <div class="brief-footer">
+          <button class="new-search-btn" onclick="resetSearch()">New research</button>
+          <span class="powered-note">
+            Search data by <a href="https://serpapi.com" target="_blank" rel="noopener">SerpApi</a>
+            · AI by <a href="https://anthropic.com" target="_blank" rel="noopener">Anthropic Claude</a>
+          </span>
+        </div>
+      </div>
+
+    </section>
+
+    <!-- ── How it works ─────────────────────────────────────── -->
+    <section class="how-section" id="howSection">
+      <h2>How it works</h2>
+      <div class="steps">
+        <div class="step">
+          <div class="step-num">1</div>
+          <div class="step-body">
+            <strong>You type a topic</strong>
+            <p>Any question, subject, or keyword you want to understand quickly.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">2</div>
+          <div class="step-body">
+            <strong>SerpApi fetches live results</strong>
+            <p>Real-time Google search results — current, not cached training data.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">3</div>
+          <div class="step-body">
+            <strong>Claude writes your brief</strong>
+            <p>Key takeaway, facts, sources, and next questions — ready in seconds.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- ── Footer ─────────────────────────────────────────────── -->
+  <footer class="site-footer">
+    <p>Built for the <a href="https://serpapi.com/hackathon" target="_blank" rel="noopener">SerpApi India Hackathon 2026</a></p>
+  </footer>
+
+  <script src="/static/app.js"></script>
+</body>
+</html>
