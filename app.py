@@ -6,6 +6,7 @@ A web app that searches the web using SerpApi and summarizes results using Claud
 import os
 import json
 import requests
+import google.generativeai as genai
 from flask import Flask, render_template, request, jsonify
 
 app = Flask(__name__)
@@ -57,9 +58,13 @@ def search_web(query, num_results=10):
 # ─── Claude AI summarize function ─────────────────────────────────────────────
 def summarize_with_claude(query, results, extra_answer):
     """
-    Sends search results to Claude claude-sonnet-4-6 and gets back a structured
+    Sends search results to Google Gemini and gets back a structured
     research brief as plain text / markdown.
     """
+    # Configure Gemini
+    genai.configure(api_key=os.environ.get("GEMINI_API_KEY", ""))
+    model = genai.GenerativeModel("gemini-1.5-flash")
+
     # Build context from search results
     results_text = ""
     for i, r in enumerate(results, 1):
@@ -94,26 +99,8 @@ Write a clear, structured research brief based ONLY on these results. Use this e
 
 Be concise, factual, and directly useful. Do not add disclaimers or padding."""
 
-    headers = {
-        "x-api-key":         ANTHROPIC_KEY,
-        "anthropic-version": "2023-06-01",
-        "content-type":      "application/json",
-    }
-    body = {
-        "model":      "claude-sonnet-4-6",
-        "max_tokens": 1000,
-        "messages":   [{"role": "user", "content": prompt}],
-    }
-
-    response = requests.post(
-        "https://api.anthropic.com/v1/messages",
-        headers=headers,
-        json=body,
-        timeout=30,
-    )
-    response.raise_for_status()
-    data = response.json()
-    return data["content"][0]["text"]
+    response = model.generate_content(prompt)
+    return response.text
 
 
 # ─── Routes ───────────────────────────────────────────────────────────────────
@@ -134,9 +121,9 @@ def search():
     if not SERPAPI_KEY:
         return jsonify({"error": "SERPAPI_KEY is not set. See setup instructions."}), 500
 
-    if not ANTHROPIC_KEY:
-        return jsonify({"error": "ANTHROPIC_API_KEY is not set. See setup instructions."}), 500
-
+   GEMINI_KEY = os.environ.get("GEMINI_API_KEY", "")
+if not GEMINI_KEY:
+    return jsonify({"error": "GEMINI_API_KEY is not set. See setup instructions."}), 500
     try:
         # Step 1: Search the web
         results, extra = search_web(query)
